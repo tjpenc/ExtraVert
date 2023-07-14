@@ -49,7 +49,41 @@
 
 Console.WriteLine("Welcome to ExtraVert");
 
-for (int i = 0; i < plants.Count; i++)
+string choice = null;
+while (choice != "0")
 {
-  Console.WriteLine($"{plants[i].Species}");
+  Console.WriteLine(@"Please select an option: 
+    0. Exit
+    1. Display all Plants
+    2. Post a Plant
+    3. Adopt a Plant
+    4. Delist a plant");
+    choice = Console.ReadLine();
+  if (choice == "0")
+  {
+    Console.WriteLine("See ya l8er");
+  }
+  else if (choice == "1")
+  {
+    throw new NotImplementedException("Display all Plants");
+  }
+  else if (choice == "2")
+  {
+    throw new NotImplementedException("Post a plant");
+  }
+  else if (choice == "3")
+  {
+    throw new NotImplementedException("Adopt a plant");
+  }
+  else if (choice == "4")
+  {
+    throw new NotImplementedException("Delist a plant");
+  }
+  else
+  {
+    Console.WriteLine("Choose a viable option");
+  }
+  Console.WriteLine("Press any key to continue");
+  Console.ReadKey();
+  Console.Clear();
 }
