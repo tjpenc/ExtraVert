@@ -66,7 +66,8 @@ while (choice != "0")
     2. Post a Plant
     3. Adopt a Plant
     4. Delist a Plant
-    5. Plant of the Day!");
+    5. Plant of the Day!
+    6. Search Plants by Light Needs");
     choice = Console.ReadLine();
   if (choice == "0")
   {
@@ -91,6 +92,10 @@ while (choice != "0")
   else if (choice == "5")
   {
     ShowPlantOfTheDay();
+  }
+  else if (choice == "6")
+  {
+    SearchByLightNeeds();
   }
   else
   {
@@ -185,4 +190,21 @@ void ShowPlantOfTheDay()
   Console.WriteLine(@$"  Location: {plant.City}, {plant.ZIP}
   Light Intensity: {plant.LightNeeds}
   Asking Price: ${plant.AskingPrice}");
+}
+
+void SearchByLightNeeds()
+{
+  Console.Clear();
+  Console.WriteLine("Please enter the maximum light your plants need from 1 (lowest) to 5 (highest)");
+
+  int lightLevelChoice = int.Parse(Console.ReadLine());
+  List<Plant> filteredPlants = new List<Plant>();
+  foreach (Plant plant in plants)
+  {
+    if (plant.LightNeeds <= lightLevelChoice) filteredPlants.Add(plant);
+  }
+  for (int i = 0; i < filteredPlants.Count; i++)
+  {
+    Console.WriteLine($"{filteredPlants[i].Species} - Light Level Needed: {filteredPlants[i].LightNeeds}");
+  }
 }
