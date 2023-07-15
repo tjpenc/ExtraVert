@@ -3,7 +3,7 @@
   new Plant
   {
     Species = "Borage",
-    LightNeeds = 4,
+    LightNeeds = 5,
     AskingPrice = 5.00M,
     City = "Johnson City",
     ZIP = "37624",
@@ -72,7 +72,8 @@ while (choice != "0")
     3. Adopt a Plant
     4. Delist a Plant
     5. Plant of the Day!
-    6. Search Plants by Light Needs");
+    6. Search Plants by Light Needs
+    7. Show Statistics");
     choice = Console.ReadLine();
   if (choice == "0")
   {
@@ -101,6 +102,10 @@ while (choice != "0")
   else if (choice == "6")
   {
     SearchByLightNeeds();
+  }
+  else if (choice == "7")
+  {
+    ShowAppStats();
   }
   else
   {
@@ -163,15 +168,7 @@ void AdoptAPlant()
 {
   Console.Clear();
   Console.WriteLine("Choose a plant you would like to adopt");
-  List<Plant> availablePlants = new List<Plant>();
-  foreach (Plant plant in plants)
-  {
-    bool isAvailableDatePassed = plant.AvailableUntil < DateTime.Now;
-    if (!plant.Sold && !isAvailableDatePassed)
-    {
-      availablePlants.Add(plant);
-    }
-  }
+  List<Plant> availablePlants = getAvailablePlants();
   for (int i = 0; i < availablePlants.Count; i++)
   {
     Console.WriteLine($"{i + 1}. {availablePlants[i].Species}: ${availablePlants[i].AskingPrice}");
@@ -220,4 +217,111 @@ void SearchByLightNeeds()
   {
     Console.WriteLine($"{filteredPlants[i].Species} - Light Level Needed: {filteredPlants[i].LightNeeds}");
   }
+}
+
+void ShowAppStats()
+{
+  Console.Clear();
+  Console.WriteLine("App Statistics");
+
+  string cheapestPlant = GetCheapestPlant();
+  int numberAvailablePlants = getAvailablePlants().Count;
+  string highestLightPlant = GetHighestLightNeedsPlant();
+  double averageLightNeeds = CalculateAverageLightNeeds();
+  double percentAdoptedPlants = CalculatePercentAdoptedPlants();
+
+  Console.WriteLine(@$"  Cheapest Plant: {cheapestPlant}
+  Available Plants: {numberAvailablePlants}
+  Plant with the Highest Light Needs: {highestLightPlant}
+  Average Light Needs of all Plants: {averageLightNeeds}
+  {percentAdoptedPlants}% of plants have been adopted");
+}
+
+List<Plant> getAvailablePlants()
+{
+  List<Plant> availablePlants = new List<Plant>();
+  foreach (Plant plant in plants)
+  {
+    bool isAvailableDatePassed = plant.AvailableUntil < DateTime.Now;
+    if (!plant.Sold && !isAvailableDatePassed)
+    {
+      availablePlants.Add(plant);
+    }
+  }
+  return availablePlants;
+}
+
+string GetCheapestPlant()
+{
+  decimal lowestPrice = 0;
+  string cheapestPlant = null;
+  for (int i = 0; i < plants.Count; i++)
+  {
+    if (i != 0)
+    {
+      lowestPrice = Math.Min(lowestPrice, plants[i].AskingPrice);
+    }
+    else
+    {
+      lowestPrice = plants[i].AskingPrice;
+    }
+  }
+  foreach (Plant plant in plants)
+  {
+    if (plant.AskingPrice == lowestPrice)
+    {
+      cheapestPlant = plant.Species;
+    }
+  }
+  return cheapestPlant;
+}
+
+string GetHighestLightNeedsPlant()
+{
+  int highestLight = 0;
+  string highestLightPlant = null;
+  for (int i = 0; i < plants.Count; i++)
+  {
+    if (i != 0)
+    {
+      highestLight = Math.Max(highestLight, plants[i].LightNeeds);
+    }
+    else
+    {
+      highestLight = plants[i].LightNeeds;
+    }
+  }
+  foreach (Plant plant in plants)
+  {
+    if (plant.LightNeeds == highestLight)
+    {
+      highestLightPlant = plant.Species;
+    }
+  }
+  return highestLightPlant;
+}
+
+double CalculateAverageLightNeeds()
+{
+  int totalLightNeeds = 0;
+  foreach (Plant plant in plants)
+  {
+    totalLightNeeds += plant.LightNeeds;
+  }
+  double averageLightNeeds = (double)totalLightNeeds / plants.Count;
+  return averageLightNeeds;
+}
+
+double CalculatePercentAdoptedPlants()
+{
+  double plantsSold = 0;
+  foreach (Plant plant in plants)
+  {
+    if (plant.Sold == true)
+    {
+      plantsSold++;
+    }
+  }
+  double percentPlantsSold = (plantsSold / plants.Count) * 100;
+  return percentPlantsSold;
 }
