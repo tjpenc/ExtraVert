@@ -146,22 +146,32 @@ void PostAPlant()
   string zip = Console.ReadLine();
 
   Console.WriteLine("Please enter the date the plant is available until in the format YYYY/MM/DD");
-  string dateEntered = Console.ReadLine();
   DateTime availableUntil = new DateTime();
-  availableUntil = DateTime.Parse(dateEntered);
-
-  Plant plant = new Plant()
+  bool isSubmitted = false;
+  while (!isSubmitted)
   {
-    Species = species,
-    LightNeeds = lightNeeds,
-    AskingPrice = askingPrice,
-    City = city,
-    ZIP = zip,
-    AvailableUntil = availableUntil
-  };
-
-  plants.Add(plant);
-  Console.WriteLine("Plant added!");
+    try
+    {
+      string dateEntered = Console.ReadLine();
+      availableUntil = DateTime.Parse(dateEntered);
+      Plant plant = new Plant()
+      {
+        Species = species,
+        LightNeeds = lightNeeds,
+        AskingPrice = askingPrice,
+        City = city,
+        ZIP = zip,
+        AvailableUntil = availableUntil
+      };
+      plants.Add(plant);
+      Console.WriteLine("Plant added!");
+      isSubmitted = true;
+    }
+    catch (FormatException)
+    {
+      Console.WriteLine("Please enter a valid date in the format YYYY/MM/DD");
+    }
+  }
 }
 
 void AdoptAPlant()
