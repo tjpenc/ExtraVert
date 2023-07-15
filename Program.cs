@@ -120,8 +120,8 @@ void DisplayAllPlants()
 {
   for (int i = 0; i < plants.Count; i++)
   {
-    string availableDate = plants[i].AvailableUntil.ToString("dd/MM/yyyy");
-    Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars until {availableDate}");
+    string plantString = GetPlantDetails(plants[i], i);
+    Console.WriteLine(plantString);
   }
 }
 
@@ -334,4 +334,12 @@ double CalculatePercentAdoptedPlants()
   }
   double percentPlantsSold = (plantsSold / plants.Count) * 100;
   return percentPlantsSold;
+}
+
+string GetPlantDetails(Plant plant, int i)
+{
+  string availableDate = plant.AvailableUntil.ToString("dd/MM/yyyy");
+  string plantString = $"{i + 1}. {plant.Species} in {plant.City} {(plant.Sold ? "was sold" : "is available")} for {plant.AskingPrice} dollars until {availableDate}";
+
+  return plantString;
 }
